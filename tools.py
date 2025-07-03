@@ -5,7 +5,8 @@ from typing import Dict, Any, List
 from langchain.tools import BaseTool
 from pydantic import BaseModel, Field
 from database import DatabaseManager
-import re
+import pandas as pd
+
 
 class QueryExecutorInput(BaseModel):
     sql_query: str = Field(description="SQL query to execute")
@@ -48,29 +49,33 @@ class QueryExecutorTool(BaseTool):
         return True
     
     def _format_results(self, results: List[Dict[str, Any]]) -> str:
-        """Format query results for display"""
-        if not results:
-            return "No results found"
+        # print(f"SQL Query Result Type:\n{type(results)}")
+        # print(f"SQL Query Result:\n{results}")
+        # """Format query results for display"""
+        # if not results:
+        #     return "No results found"
         
-        # Get column headers
-        headers = list(results[0].keys())
+        # # Get column headers
+        # headers = list(results[0].keys())
         
-        # Create formatted table
-        formatted = "Query Results:\n"
-        formatted += "-" * 50 + "\n"
+        # # Create formatted table
+        # formatted = "Query Results:\n"
+        # formatted += "-" * 50 + "\n"
         
-        # Add headers
-        formatted += " | ".join(f"{header:15}" for header in headers) + "\n"
-        formatted += "-" * 50 + "\n"
+        # # Add headers
+        # formatted += " | ".join(f"{header:15}" for header in headers) + "\n"
+        # formatted += "-" * 50 + "\n"
         
-        # Add data rows (limit to first 10 for readability)
-        for i, row in enumerate(results[:10]):
-            formatted += " | ".join(f"{str(row[header]):15}" for header in headers) + "\n"
+        # # Add data rows (limit to first 10 for readability)
+        # for i, row in enumerate(results[:10]):
+        #     formatted += " | ".join(f"{str(row[header]):15}" for header in headers) + "\n"
         
-        if len(results) > 10:
-            formatted += f"\n... and {len(results) - 10} more rows"
-        
-        return formatted
+        # if len(results) > 10:
+        #     formatted += f"\n... and {len(results) - 10} more rows"
+        # print(f"formatted:\n{formatted}")
+        # return formatted
+        return pd.DataFrame(results)
+
 
 class SchemaInfoInput(BaseModel):
     table_name: str = Field(description="Optional table name to get specific info", default="")

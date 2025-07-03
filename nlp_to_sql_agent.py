@@ -12,13 +12,14 @@ from langgraph.graph.message import add_messages
 from typing_extensions import TypedDict, Annotated
 from database import DatabaseManager
 from tools import create_tools
-import json
+import pandas as pd
+
 
 class AgentState(TypedDict):
     messages: Annotated[List[BaseMessage], add_messages]
     user_query: str
     generated_sql: str
-    sql_results: str
+    sql_results: pd.DataFrame
     schema_info: str
     validation_result: str
     final_response: str

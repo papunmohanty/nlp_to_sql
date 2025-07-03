@@ -2,10 +2,10 @@
 Web interface for NLP to SQL application using Streamlit
 """
 import streamlit as st
-import os
 from nlp_to_sql_agent import NLPToSQLAgent
 from database import DatabaseManager
-import pandas as pd
+from pprint import pprint
+
 
 def main():
     st.set_page_config(
@@ -150,20 +150,25 @@ def main():
         
         with tab3:
             st.markdown("### Query Results")
-            
+            # print(f"====== RESULT=======\n{result}")
             # Try to parse and display as DataFrame
             try:
-                if "Query Results:" in result['sql_results']:
-                    # Extract tabular data from formatted results
-                    lines = result['sql_results'].split('\n')
-                    if len(lines) > 3:  # Has header and data
-                        st.text(result['sql_results'])
-                    else:
-                        st.info("No tabular data to display")
-                else:
-                    st.info(result['sql_results'])
-                    
+                # if "Query Results:" in result['sql_results']:
+                #     # Extract tabular data from formatted results
+                #     # lines = result['sql_results'].split('\n')
+                #     # if len(lines) > 3:  # Has header and data
+                #     #     st.text(result['sql_results'])
+                #     # else:
+                #     #     st.info("No tabular data to display")
+                #     st.table(result["sql_results"])
+                # else:
+                #     # print("Result Not Found")
+                #     st.info(result['sql_results'])
+                # st.table(result["sql_results"])
+                # st.table(result["sql_results"].style.hide(axis="index"))
+                st.dataframe(result["sql_results"], hide_index=True)
             except Exception as e:
+                print(f"Error showing SQL Raw Data {e}")
                 st.text(result['sql_results'])
     
     # Footer
